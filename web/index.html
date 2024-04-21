@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- bootstrap4.6 style -->
+  <link rel="stylesheet" href="style/bootstrap.min.css">
+  <link rel="stylesheet" href="style/style.css">
+  <title>来一把扫雷吧~</title>
+</head>
+<body>
+  <div id="app" class="container mt-4">
+    <h3 class="text-center">贵阳人文科技学院 — <span id="school">{{school}}</span></h3>
+    <br>
+    <div class="form-group text-center">
+      <div class="row justify-content-center">
+        <div class="col-sm-6">
+            <div class="input-group">
+              <input type="text" v-model="part" class="form-control" placeholder="楼栋号">
+              <div class="input-group-append">
+                  <span class="input-group-text">-</span>
+              </div>
+              <input type="text" v-model="room" class="form-control" placeholder="房间号">
+              <div class="input-group-append">
+                  <button class="btn btn-primary" type="button" @click="query">查询</button>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <br>
+    <div class="result">
+      <div class="card text-center">
+        <div class="card-header">
+          实时剩余电费查询
+        </div>
+        <div class="card-body">
+          <h5 id="quantity" class="card-title">{{quantity}}</h5>
+          <p class="card-text">{{currentTime}}</p>
+        </div>
+      </div>
+      <br>
+      <div class="card text-center">
+        <div class="card-header">
+          2024/04/19 缓存数据可视化
+        </div>
+        <div class="card-body" id="chart">
+          <iframe src="chart.html"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer fixed-bottom bg-light">
+    <div class="container text-center">
+      <p><a href="https://github.com/Andtun02/school-charge-open">项目开源地址</a>/p>
+      <p>POWER BY 扫雷组</p>
+    </div>
+  </footer>  
+  <script src="style/bootstrap.bundle.min.js"></script>
+  <script src="style/vue.global.min.js"></script>
+  <script src="style/axios.min.js"></script>
+  <script>
+    const { createApp, ref, onMounted } = Vue;
+    const app = createApp({
+      setup() {
+        const part = ref('');
+        const room = ref('');
+        const quantity = ref('# 度');
+        const currentTime = ref('-/-/-');
+
+        const query = () => {
+            axios.post('/query', {
+                part: part.value,
+                room: room.value
+            })
+            .then(response => {
+                console.log(response.data);
+                // 在这里处理后端返回的响应数据
+                // 例如更新页面上的 quantity 数据
+                quantity.value = response.data.quantity;
+                currentTime.value = response.data.currentTime;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        };
+
+        return {
+          part,
+          room,
+          query,
+          school: "大学城校区",
+          quantity,
+          currentTime,
+        };
+      }
+    });
+    app.mount('#app');
+  </script>
+</body>
+</html>

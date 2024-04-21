@@ -1,0 +1,28 @@
+body{
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+h3{
+    color: #001a4e;
+    font-weight: 600;
+}
+
+.result{
+    color: #001a4e !important;
+}
+
+.result #quantity{
+    font-weight: 600;
+}
+
+#chart {
+    width: 100%;
+    height: 1650px;
+}
+#chart iframe {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
