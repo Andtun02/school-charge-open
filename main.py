@@ -55,7 +55,7 @@ class server:
         # 创建饼图
         me_power = 0
         for i in range(len(x_data[0])):
-            if x_data[0][i] == '317':
+            if x_data[0][i] == '########################6寝室号': 
                 me_power = y_data[0][i]
                 break
 
